@@ -45,7 +45,7 @@ class _MessageState extends State<Message> {
                   Padding(
                     padding: const EdgeInsets.only(left: 10, top: 20),
                     child: Text(
-                      "Message",
+                      "Messages",
                       style: Config.b1(context).copyWith(fontSize: 20),
                     ),
                   ),
@@ -56,100 +56,107 @@ class _MessageState extends State<Message> {
                 child: StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
                     stream: FirebaseFirestore.instance
                         .collection("chat")
-                        // .where("uid", arrayContains: currentUser!.uid)
-                        // .where("buyersId", isEqualTo: currentUser!.uid)
                         .snapshots(),
                     builder: (context, snapshot) {
                       if (snapshot.hasData) {
-                        print(snapshot.data!.docs[0]["product"][0]
-                            ["productName"]);
                         return ListView.builder(
                             itemCount: snapshot.data!.docs.length,
                             shrinkWrap: true,
                             itemBuilder: (context, index) {
-                              return Padding(
-                                padding:
-                                    const EdgeInsets.symmetric(vertical: 8.0),
-                                child: Container(
-                                  padding: const EdgeInsets.symmetric(
-                                      horizontal: 25.0, vertical: 15),
-                                  height: 105,
-                                  width: context.screenWidth(),
-                                  decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
-                                    border: Border.all(
-                                        color: const Color(0xFF9BA7B5)),
-                                  ),
-                                  child: Row(
-                                    children: [
-                                      Container(
-                                        height: 80,
-                                        width: 80,
+                              return snapshot.data!.docs[index]["roomId"]
+                                      .contains(currentUser!.uid)
+                                  ? Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          vertical: 8.0),
+                                      child: Container(
+                                        padding: const EdgeInsets.symmetric(
+                                            horizontal: 25.0, vertical: 15),
+                                        height: 105,
+                                        width: context.screenWidth(),
                                         decoration: BoxDecoration(
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           border: Border.all(
                                               color: const Color(0xFF9BA7B5)),
-                                          color: const Color(0xFFE4F2FB),
                                         ),
-                                        child: ClipRRect(
-                                          borderRadius:
-                                              BorderRadius.circular(10.0),
-                                          child: CachedNetworkImage(
-                                              fit: BoxFit.cover,
-                                              imageUrl: snapshot.data!
-                                                      .docs[index]["product"][0]
-                                                  ["productImage"]),
-                                        ),
-                                      ),
-                                      const XMargin(8.0),
-                                      Column(
-                                        mainAxisAlignment:
-                                            MainAxisAlignment.center,
-                                        crossAxisAlignment:
-                                            CrossAxisAlignment.start,
-                                        children: [
-                                          Text(
-                                            snapshot.data!.docs[index]
-                                                ["product"][0]["productName"],
-                                            style: Config.b1(context)
-                                                .copyWith(fontSize: 14),
-                                          ),
-                                          Text(
-                                            snapshot.data!.docs[index]
-                                                    ["lastMessage"] ??
-                                                "",
-                                            style: Config.b3(context).copyWith(
-                                              fontSize: 10,
+                                        child: Row(
+                                          children: [
+                                            Container(
+                                              height: 80,
+                                              width: 80,
+                                              decoration: BoxDecoration(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                border: Border.all(
+                                                    color: const Color(
+                                                        0xFF9BA7B5)),
+                                                color: const Color(0xFFE4F2FB),
+                                              ),
+                                              child: ClipRRect(
+                                                borderRadius:
+                                                    BorderRadius.circular(10.0),
+                                                child: CachedNetworkImage(
+                                                    fit: BoxFit.cover,
+                                                    imageUrl:
+                                                        snapshot.data!
+                                                                    .docs[index]
+                                                                ["product"][0]
+                                                            ["productImage"]),
+                                              ),
                                             ),
-                                          )
-                                        ],
-                                      ),
-                                      const Spacer(),
-                                      Text(
-                                        timeago.format(snapshot
-                                            .data!.docs[index]["lastChat"]
-                                            .toDate()),
-                                        style: Config.b3(context).copyWith(
-                                          fontSize: 12,
+                                            const XMargin(8.0),
+                                            Column(
+                                              mainAxisAlignment:
+                                                  MainAxisAlignment.center,
+                                              crossAxisAlignment:
+                                                  CrossAxisAlignment.start,
+                                              children: [
+                                                Text(
+                                                  snapshot.data!.docs[index]
+                                                          ["product"][0]
+                                                      ["productName"],
+                                                  style: Config.b1(context)
+                                                      .copyWith(fontSize: 14),
+                                                ),
+                                                Text(
+                                                  snapshot.data!.docs[index]
+                                                          ["lastMessage"] ??
+                                                      "",
+                                                  style: Config.b3(context)
+                                                      .copyWith(
+                                                    fontSize: 10,
+                                                  ),
+                                                )
+                                              ],
+                                            ),
+                                            const Spacer(),
+                                            Text(
+                                              timeago.format(snapshot
+                                                  .data!.docs[index]["lastChat"]
+                                                  .toDate()),
+                                              style:
+                                                  Config.b3(context).copyWith(
+                                                fontSize: 12,
+                                              ),
+                                            ),
+                                          ],
                                         ),
+                                      ).ripple(
+                                        () {
+                                          if (kDebugMode) {
+                                            print("1");
+                                          }
+                                          NavigationService()
+                                              .navigateToScreen(MessageScreen(
+                                            chatId: snapshot.data!.docs[index]
+                                                ["roomId"],
+                                          ));
+                                        },
+                                        borderRadius:
+                                            BorderRadius.circular(10.0),
                                       ),
-                                    ],
-                                  ),
-                                ).ripple(
-                                  () {
-                                    if (kDebugMode) {
-                                      print("1");
-                                    }
-                                    NavigationService()
-                                        .navigateToScreen(MessageScreen(
-                                      chatId: snapshot.data!.docs[index]
-                                          ["roomId"],
-                                    ));
-                                  },
-                                  borderRadius: BorderRadius.circular(10.0),
-                                ),
-                              );
+                                    )
+                                  : SizedBox();
                             });
                       } else if (snapshot.connectionState ==
                               ConnectionState.done &&

@@ -332,7 +332,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                       icon: ImagesAsset.chat,
                                                       onTap: () {
                                                         String roomId =
-                                                            "${snapshot.data!.uid!}.${currentUser!.uid}";
+                                                            "${currentUser!.uid}.${snapshot.data!.uid!}";
                                                         chatModel = ChatModel(
                                                             uid: snapshot
                                                                 .data!.uid!,
