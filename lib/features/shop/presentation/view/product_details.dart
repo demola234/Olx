@@ -3,6 +3,7 @@ import 'dart:async';
 
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce/core/utils/custom_buttons.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -21,10 +22,8 @@ import 'package:ecommerce/features/authentication/data/user_model.dart';
 import 'package:ecommerce/features/chat/presentation/view/message_screen.dart';
 import 'package:ecommerce/features/profile/presentation/view/view_other_profiles.dart';
 import 'package:ecommerce/features/shop/data/product_model.dart';
-import 'package:ecommerce/features/shop/presentation/view/search_product.dart';
 
 import '../../../../data/remote/chat/chat_service.dart';
-import '../../../../data/remote/products/categories_services.dart';
 import '../../../../data/remote/products/products.dart';
 import '../../../../di/di.dart';
 import '../../../authentication/presentation/view/setprofile/set_location.dart';
@@ -76,20 +75,53 @@ class _ProductDetailsState extends State<ProductDetails> {
       bottomNavigationBar: Row(
         children: [
           Container(
-            height: 100,
-            width: context.screenWidth(),
-            decoration: const BoxDecoration(
-              color: Colors.white,
-            ),
-            child: Row(
-              children: [
-                FloatingOlxButtons(
-                    color: OlxColor.olxPrimary, name: "Call", onTap: () {}),
-                FloatingOlxButtons(
-                    color: OlxColor.olxPrimary, name: "Call", onTap: () {}),
-              ],
-            ),
-          ),
+              height: 100,
+              width: context.screenWidth(),
+              decoration: const BoxDecoration(
+                color: Colors.white,
+              ),
+              child: FutureBuilder(
+                  future: userDetails,
+                  builder: (context, AsyncSnapshot<UserParams> snapshot) {
+                    if (snapshot.hasData) {
+                      return snapshot.data!.uid! != currentUser!.uid
+                          ? Row(
+                              children: [
+                                FloatingOlxButtons(
+                                    color: OlxColor.olxPrimary,
+                                    name: "Call",
+                                    onTap: () {}),
+                                FloatingOlxButtons(
+                                    color: Color(0xFF82A3A1),
+                                    name: "Message",
+                                    onTap: () {}),
+                              ],
+                            )
+                          : Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                FloatingOlxButtons(
+                                    color: Color(0xFF82A3A1),
+                                    onTap: () {},
+                                    name: "Edit Product"),
+                              ],
+                            );
+                    } else if (snapshot.connectionState ==
+                        ConnectionState.done) {
+                      return Center(
+                        child: ListView(
+                          shrinkWrap: true,
+                          children: const <Widget>[
+                            Align(
+                                alignment: AlignmentDirectional.center,
+                                child: Text('No data available')),
+                          ],
+                        ),
+                      );
+                    } else {
+                      return const Center(child: CircularProgressIndicator());
+                    }
+                  })),
         ],
       ),
       body: SingleChildScrollView(
@@ -276,14 +308,18 @@ class _ProductDetailsState extends State<ProductDetails> {
                                       ),
                                     ],
                                   ),
-                                  Text(
-                                    "Read More",
-                                    maxLines: 1,
-                                    overflow: TextOverflow.ellipsis,
-                                    style: Config.b1(context).copyWith(
-                                      fontSize: 13,
-                                      color: OlxColor.olxPrimary,
-                                    ),
+                                  Row(
+                                    children: [
+                                      Text(
+                                        "Read More",
+                                        maxLines: 1,
+                                        overflow: TextOverflow.ellipsis,
+                                        style: Config.b1(context).copyWith(
+                                          fontSize: 13,
+                                          color: OlxColor.olxPrimary,
+                                        ),
+                                      ),
+                                    ],
                                   ),
                                 ],
                               ),
@@ -486,12 +522,6 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                   height: 50,
                                                   width: 50),
                                             ),
-                                            // Center(
-                                            //     child: CircleAvatar(
-                                            //   radius: 40,
-                                            //   backgroundColor: Color(0xFF007AFF)
-                                            //       .withOpacity(0.2),
-                                            // ))
                                           ],
                                         )),
                                   ));
@@ -615,7 +645,51 @@ class FloatingOlxButtons extends StatelessWidget {
         decoration: BoxDecoration(
           color: color,
           border: Border.all(color: const Color(0xFF1F2421).withOpacity(0.3)),
-          borderRadius: BorderRadius.circular(8.0),
+          borderRadius: BorderRadius.circular(10.0),
+        ),
+        child: InkWell(
+          onTap: onTap,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              Text(
+                name,
+                style: GoogleFonts.poppins(
+                  color: Colors.white,
+                  fontWeight: FontWeight.w500,
+                ),
+              ),
+              const XMargin(5),
+            ],
+          ),
+        ),
+      ),
+    );
+  }
+}
+
+class OlxButtonEditProduct extends StatelessWidget {
+  final String name;
+  final void Function()? onTap;
+  final Color color;
+  const OlxButtonEditProduct({
+    Key? key,
+    required this.name,
+    this.onTap,
+    required this.color,
+  }) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Padding(
+      padding: const EdgeInsets.symmetric(horizontal: 30),
+      child: Container(
+        height: context.screenHeight() - 100,
+        width: 150,
+        decoration: BoxDecoration(
+          color: color,
+          border: Border.all(color: const Color(0xFF1F2421).withOpacity(0.3)),
+          borderRadius: BorderRadius.circular(10.0),
         ),
         child: InkWell(
           onTap: onTap,

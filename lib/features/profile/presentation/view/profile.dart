@@ -1,4 +1,5 @@
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:ecommerce/core/utils/navigator.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors.dart';
@@ -9,6 +10,7 @@ import '../../../../di/di.dart';
 import '../../../authentication/data/user_model.dart';
 import '../../../authentication/presentation/view/setprofile/set_location.dart';
 import '../../../shop/presentation/view/product_details.dart';
+import 'edit_profile.dart';
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -72,7 +74,10 @@ class _ProfileState extends State<Profile> {
                           child: FloatingOlxButtons(
                               color: Color(0xFF82A3A1),
                               name: "Edit Profile",
-                              onTap: () {}),
+                              onTap: () {
+                                NavigationService()
+                                    .navigateToScreen(EditProfile());
+                              }),
                         ),
                         YMargin(20),
                         Padding(

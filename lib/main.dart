@@ -2,6 +2,7 @@ import 'dart:async';
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/constants/image_assets.dart';
 import 'package:ecommerce/features/authentication/presentation/provider/google_provider.dart';
+import 'package:ecommerce/features/save_product/presentation/provider/save_product_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
@@ -69,6 +70,9 @@ List<SingleChildWidget> get providers {
     ),
     ChangeNotifierProvider<CategoriesProvider>.value(
       value: CategoriesProvider(),
+    ),
+    ChangeNotifierProvider<SaveProductProvider>.value(
+      value: SaveProductProvider(),
     ),
   ];
 }

@@ -57,16 +57,20 @@ class _ViewProfileState extends State<ViewProfile> {
                 children: [
                   YMargin(40),
                   Align(
-                      alignment: Alignment.center,
-                      child: CircleAvatar(
-                        radius: 120,
-                        child: ClipRRect(
-                          borderRadius: BorderRadius.all(Radius.circular(100)),
-                          child: CachedNetworkImage(
-                            imageUrl: snapshot.data!.profileImage!,
+                    alignment: Alignment.center,
+                    child: ClipRRect(
+                      borderRadius: BorderRadius.circular(100),
+                      child: Container(
+                          decoration: const BoxDecoration(
+                            shape: BoxShape.circle,
                           ),
-                        ),
-                      )),
+                          child: CachedNetworkImage(
+                              fit: BoxFit.cover,
+                              height: 200,
+                              width: 200,
+                              imageUrl: snapshot.data!.profileImage!)),
+                    ),
+                  ),
                   YMargin(20),
                   Flexible(
                     child: FloatingOlxButtons(

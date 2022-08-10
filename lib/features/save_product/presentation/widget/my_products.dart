@@ -1,3 +1,7 @@
+import 'package:ecommerce/core/constants/colors.dart';
+import 'package:ecommerce/core/utils/navigator.dart';
+import 'package:ecommerce/core/utils/ripple.dart';
+import 'package:ecommerce/features/save_product/presentation/provider/save_product_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 
@@ -5,6 +9,7 @@ import 'package:ecommerce/core/utils/config.dart';
 import 'package:ecommerce/features/shop/data/product_model.dart';
 import 'package:ecommerce/features/shop/presentation/view/home.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../../../../data/remote/products/products.dart';
 import '../../../../di/di.dart';
@@ -38,6 +43,7 @@ class _MyProductsState extends State<MyProducts> {
 
   @override
   Widget build(BuildContext context) {
+    var deleted = Provider.of<SaveProductProvider>(context, listen: false);
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 20.0),
       child: FutureBuilder(
@@ -56,8 +62,47 @@ class _MyProductsState extends State<MyProducts> {
                 itemCount: snapshot.data!.length,
                 itemBuilder: (BuildContext ctx, index) {
                   // print(snapshot.data![index].category);
-                  return ProductItem(
-                      isHotSales: false, products: snapshot.data![index]);
+                  return GestureDetector(
+                    onLongPress: () {
+                      showDialog(
+                        context: context,
+                        builder: (BuildContext context) {
+                          return AlertDialog(
+                            title: const Text('Delete'),
+                            content: const Text(
+                                'Are you sure you will like to delete this product'),
+                            actions: <Widget>[
+                              TextButton(
+                                onPressed: () =>
+                                    Navigator.pop(context, 'Cancel'),
+                                child: Text(
+                                  'Cancel',
+                                  style: Config.b3(context)
+                                      .copyWith(color: OlxColor.black),
+                                ),
+                              ),
+                              TextButton(
+                                onPressed: () {
+                                  setState(() {
+                                    deleted.delete(snapshot.data![index].id);
+                                    NavigationService().popToFirst();
+                                  });
+                                },
+                                child: Text(
+                                  'Delete',
+                                  style: Config.b3(context)
+                                      .copyWith(color: Colors.red),
+                                ),
+                              ),
+                            ],
+                          );
+                        },
+                      );
+                      print('d');
+                    },
+                    child: ProductItem(
+                        isHotSales: false, products: snapshot.data![index]),
+                  );
                 },
               );
             } else if (snapshot.connectionState == ConnectionState.done &&

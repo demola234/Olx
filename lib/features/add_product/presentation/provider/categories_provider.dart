@@ -25,20 +25,6 @@ class CategoriesProvider with ChangeNotifier {
   late String selectedCategories;
   List<String> urlList = [];
 
-  getCategories(selectedCat) {
-    selectedCategories = selectedCat;
-    notifyListeners();
-  }
-
-  getCategorySnapshot(snapshot) {
-    docs = snapshot;
-    notifyListeners();
-  }
-
-  getImages(url) {
-    urlList = url;
-    notifyListeners();
-  }
 
   Future addProduct(String productName, String price, String category,
       String shippingType, String desc, List<File> file) async {

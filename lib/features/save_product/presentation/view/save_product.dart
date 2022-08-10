@@ -13,7 +13,6 @@ class SaveProduct extends StatefulWidget {
 }
 
 class _SaveProductState extends State<SaveProduct> {
-  TabController? _controller;
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
@@ -27,10 +26,10 @@ class _SaveProductState extends State<SaveProduct> {
                 padding: const EdgeInsets.symmetric(
                     horizontal: 20.0, vertical: 10.0),
                 child: Container(
-                  padding: EdgeInsets.all(10),
+                  padding: const EdgeInsets.all(10),
                   decoration: BoxDecoration(
-                      borderRadius: BorderRadius.all(Radius.circular(10)),
-                      border: Border.all(color: Color(0xFF8D8ECEA))),
+                      borderRadius: const BorderRadius.all(Radius.circular(10)),
+                      border: Border.all(color:const Color.fromRGBO(216, 236, 234, 0.973))),
                   child: TabBar(
                     indicator: BoxDecoration(
                         color: OlxColor.olxPrimary,
