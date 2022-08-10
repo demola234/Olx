@@ -24,6 +24,8 @@ abstract class ProductService {
   Future<List<ProductModel>>? getFavoriteItems(String userId);
 
   Future addBookmarkedItems(String productId, String userId);
+
+  Future<UserParams>? fetchProductOwner(String userId);
 }
 
 class ProductServiceImpl implements ProductService {
@@ -126,5 +128,12 @@ class ProductServiceImpl implements ProductService {
     return snapshot.docs
         .map((docSnapshot) => ProductModel.fromMap(docSnapshot))
         .toList();
+  }
+
+  @override
+  Future<UserParams>? fetchProductOwner(String userId) async {
+    DocumentSnapshot<Map<String, dynamic>> snapshot =
+        await _db.collection("user").doc(userId).get();
+    return UserParams.fromMap(snapshot);
   }
 }

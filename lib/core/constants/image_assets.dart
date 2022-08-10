@@ -31,8 +31,10 @@ class ImagesAsset {
   static String add = '$_iconDir/add.svg';
   static String locationIcon = '$_iconDir/location.svg';
   static String bookmark = '$_iconDir/Bookmark.svg';
+  static String bookmarkActive = '$_iconDir/Bookmark_active.svg';
   static String profile = '$_iconDir/Profile.svg';
   static String search = '$_iconDir/Search.svg';
+  static String currentLocation = '$_iconDir/current_location.svg';
 
   //Jsons
   static String olxShop = '$_jsonDir/shop-delivery.json';

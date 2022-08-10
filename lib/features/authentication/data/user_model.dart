@@ -9,6 +9,7 @@ class UserParams {
   String? emailAddress;
   String? profileImage;
   String? address;
+  String? phone;
   GeoPoint? location;
 
   UserParams({
@@ -17,6 +18,7 @@ class UserParams {
     this.emailAddress,
     this.profileImage,
     this.address,
+    this.phone,
     this.location,
   });
 
@@ -29,6 +31,7 @@ class UserParams {
         "profileImage": profileImage,
         "address": address,
         "location": location,
+         "phone": phone,
       };
 
   UserParams.fromMap(DocumentSnapshot<Map<String, dynamic>> map)
@@ -37,5 +40,6 @@ class UserParams {
         emailAddress = map['emailAddress'] as String,
         profileImage = map['profileImage'] as String,
         address = map['address'] as String,
+        phone = map['phone'] as String,
         location = map['location'];
 }

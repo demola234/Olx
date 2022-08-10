@@ -1,13 +1,8 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
+import 'dart:async';
+
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:ecommerce/core/constants/colors.dart';
-import 'package:ecommerce/core/constants/image_assets.dart';
-import 'package:ecommerce/core/utils/config.dart';
-import 'package:ecommerce/core/utils/navigator.dart';
-import 'package:ecommerce/features/authentication/data/user_model.dart';
-import 'package:ecommerce/features/chat/presentation/view/message_screen.dart';
-import 'package:ecommerce/features/shop/data/product_model.dart';
-import 'package:ecommerce/features/shop/presentation/view/search_product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -17,6 +12,17 @@ import 'package:google_maps_flutter/google_maps_flutter.dart';
 import 'package:intl/intl.dart';
 import 'package:map_launcher/map_launcher.dart' as map;
 import 'package:photo_view/photo_view.dart';
+
+import 'package:ecommerce/core/constants/colors.dart';
+import 'package:ecommerce/core/constants/image_assets.dart';
+import 'package:ecommerce/core/utils/config.dart';
+import 'package:ecommerce/core/utils/navigator.dart';
+import 'package:ecommerce/features/authentication/data/user_model.dart';
+import 'package:ecommerce/features/chat/presentation/view/message_screen.dart';
+import 'package:ecommerce/features/profile/presentation/view/view_other_profiles.dart';
+import 'package:ecommerce/features/shop/data/product_model.dart';
+import 'package:ecommerce/features/shop/presentation/view/search_product.dart';
+
 import '../../../../data/remote/chat/chat_service.dart';
 import '../../../../data/remote/products/categories_services.dart';
 import '../../../../data/remote/products/products.dart';
@@ -36,6 +42,7 @@ class ProductDetails extends StatefulWidget {
 }
 
 class _ProductDetailsState extends State<ProductDetails> {
+  Completer<GoogleMapController> _controller = Completer();
   var productService = getIt<ProductService>();
   var chatServices = getIt<ChatServices>();
   var currentUser = FirebaseAuth.instance.currentUser;
@@ -59,6 +66,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.white,
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(70.0),
         child: CustomAppBar(
@@ -74,9 +82,11 @@ class _ProductDetailsState extends State<ProductDetails> {
               color: Colors.white,
             ),
             child: Row(
-              children: const [
-                FloatingOlxButtons(),
-                FloatingOlxButtons(),
+              children: [
+                FloatingOlxButtons(
+                    color: OlxColor.olxPrimary, name: "Call", onTap: () {}),
+                FloatingOlxButtons(
+                    color: OlxColor.olxPrimary, name: "Call", onTap: () {}),
               ],
             ),
           ),
@@ -105,23 +115,22 @@ class _ProductDetailsState extends State<ProductDetails> {
                           width: 360,
                           decoration: BoxDecoration(
                             borderRadius: BorderRadius.circular(17),
-                            border: Border.all(color: const Color(0xFF9BA7B5)),
+                            border: Border.all(color: const Color(0xFFF4F4F4)),
                             color: const Color(0xFFE4F2FB),
                           ),
                           child: GestureDetector(
+                            onTap: () {},
                             child: ClipRRect(
                                 borderRadius: BorderRadius.circular(17),
-                                child: Stack(
-                                  children: [
-                                    PhotoView(
-                                        backgroundDecoration:
-                                            const BoxDecoration(
-                                          color: Color(0xFFE4F2FB),
-                                        ),
-                                        imageProvider: NetworkImage(
-                                            snapshot.data!.images[_index])),
-                                  ],
-                                )),
+                                child: PhotoView(
+                                    backgroundDecoration: const BoxDecoration(
+                                      color: Colors.white,
+                                    ),
+                                    initialScale: 0.3,
+                                    tightMode: true,
+                                    customSize: Size(360, 265),
+                                    imageProvider: NetworkImage(
+                                        snapshot.data!.images[_index]))),
                           ),
                         ),
                       ),
@@ -167,7 +176,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   maxLines: 1,
                                   overflow: TextOverflow.ellipsis,
                                   style: Config.b1(context).copyWith(
-                                    fontSize: 16,
+                                    fontSize: 18,
                                   ),
                                 ),
                               ),
@@ -183,36 +192,36 @@ class _ProductDetailsState extends State<ProductDetails> {
                           ],
                         ),
                       ),
-                      const YMargin(5),
+                      const YMargin(12),
                       Padding(
                         padding: const EdgeInsets.symmetric(horizontal: 20.0),
                         child: Row(
                           children: [
                             Container(
-                              height: 20,
+                              height: 25,
                               width: 80,
                               decoration: BoxDecoration(
                                   color: Colors.black,
-                                  borderRadius: BorderRadius.circular(3.5)),
+                                  borderRadius: BorderRadius.circular(8)),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
                                   snapshot.data!.shippingType,
-                                  style: Config.b1(context).copyWith(
+                                  style: Config.b2(context).copyWith(
                                     color: Colors.white,
                                     fontSize: 8,
-                                    fontWeight: FontWeight.normal,
+                                    fontWeight: FontWeight.w100,
                                   ),
                                 ),
                               ),
                             ),
                             const XMargin(10),
                             Container(
-                              height: 20,
+                              height: 25,
                               width: 80,
                               decoration: BoxDecoration(
                                   color: OlxColor.olxSecondary,
-                                  borderRadius: BorderRadius.circular(3.5)),
+                                  borderRadius: BorderRadius.circular(8)),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Text(
@@ -246,26 +255,39 @@ class _ProductDetailsState extends State<ProductDetails> {
                               ],
                             ),
                             const YMargin(5.0),
-                            Row(
-                              children: [
-                                Flexible(
-                                  child: GestureDetector(
-                                    onTap: () {
-                                      description(
-                                          context, snapshot.data!.description);
-                                    },
-                                    child: Text(
-                                      snapshot.data!.description,
-                                      overflow: TextOverflow.ellipsis,
-                                      maxLines: 3,
-                                      style: Config.b3(context).copyWith(
-                                        fontSize: 11,
+                            GestureDetector(
+                              onTap: () {
+                                description(
+                                    context, snapshot.data!.description);
+                              },
+                              child: Column(
+                                children: [
+                                  Row(
+                                    children: [
+                                      Flexible(
+                                        child: Text(
+                                          snapshot.data!.description,
+                                          overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          style: Config.b3(context).copyWith(
+                                            fontSize: 11,
+                                          ),
+                                        ),
                                       ),
+                                    ],
+                                  ),
+                                  Text(
+                                    "Read More",
+                                    maxLines: 1,
+                                    overflow: TextOverflow.ellipsis,
+                                    style: Config.b1(context).copyWith(
+                                      fontSize: 13,
+                                      color: OlxColor.olxPrimary,
                                     ),
                                   ),
-                                ),
-                              ],
-                            )
+                                ],
+                              ),
+                            ),
                           ],
                         ),
                       ),
@@ -284,9 +306,9 @@ class _ProductDetailsState extends State<ProductDetails> {
                                   height: 105,
                                   width: context.screenWidth(),
                                   decoration: BoxDecoration(
-                                    borderRadius: BorderRadius.circular(10.0),
+                                    borderRadius: BorderRadius.circular(18.0),
                                     border: Border.all(
-                                        color: const Color(0xFF9BA7B5)),
+                                        color: const Color(0xFFF4F4F4)),
                                   ),
                                   child: Row(
                                     children: [
@@ -301,6 +323,7 @@ class _ProductDetailsState extends State<ProductDetails> {
                                           borderRadius:
                                               BorderRadius.circular(20.0),
                                           child: CachedNetworkImage(
+                                              fit: BoxFit.cover,
                                               imageUrl:
                                                   snapshot.data!.profileImage!),
                                         ),
@@ -314,8 +337,8 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             snapshot.data!.fullName!,
                                             maxLines: 1,
                                             overflow: TextOverflow.ellipsis,
-                                            style: Config.b1(context).copyWith(
-                                              fontSize: 16,
+                                            style: Config.b3(context).copyWith(
+                                              fontSize: 15,
                                             ),
                                           ),
                                           const YMargin(10),
@@ -323,6 +346,14 @@ class _ProductDetailsState extends State<ProductDetails> {
                                             children: [
                                               OlxSmallButton(
                                                   text: "View Profile",
+                                                  onTap: () {
+                                                    NavigationService()
+                                                        .navigateToScreen(
+                                                            ViewProfile(
+                                                                uid: snapshot
+                                                                    .data!
+                                                                    .uid!));
+                                                  },
                                                   color: OlxColor.olxPrimary,
                                                   icon: ImagesAsset.profile),
                                               XMargin(10),
@@ -443,17 +474,24 @@ class _ProductDetailsState extends State<ProductDetails> {
                                                               .location!
                                                               .latitude)),
                                               mapType: MapType.normal,
+                                              onMapCreated: (GoogleMapController
+                                                  controller) {
+                                                _controller
+                                                    .complete(controller);
+                                              },
                                             ),
                                             Center(
-                                                child: Icon(Icons.location_on,
-                                                    color: Colors.blue,
-                                                    size: 35)),
-                                            Center(
-                                                child: CircleAvatar(
-                                              radius: 40,
-                                              backgroundColor: Color(0xFF007AFF)
-                                                  .withOpacity(0.2),
-                                            ))
+                                              child: SvgPicture.asset(
+                                                  ImagesAsset.currentLocation,
+                                                  height: 50,
+                                                  width: 50),
+                                            ),
+                                            // Center(
+                                            //     child: CircleAvatar(
+                                            //   radius: 40,
+                                            //   backgroundColor: Color(0xFF007AFF)
+                                            //       .withOpacity(0.2),
+                                            // ))
                                           ],
                                         )),
                                   ));
@@ -557,8 +595,14 @@ class _ProductDetailsState extends State<ProductDetails> {
 }
 
 class FloatingOlxButtons extends StatelessWidget {
+  final String name;
+  final void Function()? onTap;
+  final Color color;
   const FloatingOlxButtons({
     Key? key,
+    required this.name,
+    this.onTap,
+    required this.color,
   }) : super(key: key);
 
   @override
@@ -566,20 +610,20 @@ class FloatingOlxButtons extends StatelessWidget {
     return Padding(
       padding: const EdgeInsets.symmetric(horizontal: 30),
       child: Container(
-        height: 60,
+        height: 50,
         width: 150,
         decoration: BoxDecoration(
-          color: OlxColor.olxPrimary,
+          color: color,
           border: Border.all(color: const Color(0xFF1F2421).withOpacity(0.3)),
           borderRadius: BorderRadius.circular(8.0),
         ),
         child: InkWell(
-          onTap: () {},
+          onTap: onTap,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.center,
             children: [
               Text(
-                "Call",
+                name,
                 style: GoogleFonts.poppins(
                   color: Colors.white,
                   fontWeight: FontWeight.w500,
@@ -613,29 +657,32 @@ class OlxSmallButton extends StatelessWidget {
     return GestureDetector(
       onTap: onTap,
       child: Container(
-        height: 34,
-        width: 85,
+        // height: 49,
+        // width: 85,
         decoration: BoxDecoration(
             color: color, borderRadius: BorderRadius.circular(8.0)),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            SvgPicture.asset(
-              icon,
-              height: 12,
-              width: 12,
-              color: Colors.white,
-            ),
-            const XMargin(3),
-            Text(
-              text,
-              style: Config.b2(context).copyWith(
+        child: Padding(
+          padding: const EdgeInsets.all(9.0),
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.center,
+            children: [
+              SvgPicture.asset(
+                icon,
+                height: 12,
+                width: 12,
                 color: Colors.white,
-                fontSize: 11,
-                fontWeight: FontWeight.normal,
               ),
-            ),
-          ],
+              const XMargin(3),
+              Text(
+                text,
+                style: Config.b2(context).copyWith(
+                  color: Colors.white,
+                  fontSize: 11,
+                  fontWeight: FontWeight.normal,
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
@@ -662,7 +709,7 @@ class ListedItem extends StatelessWidget {
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
           border: Border.all(
-              width: isActive ? 3 : 0,
+              width: isActive ? 1 : 0,
               color: isActive ? const Color(0xFF9BA7B5) : Colors.transparent),
           color: const Color(0xFFE4F2FB),
         ),

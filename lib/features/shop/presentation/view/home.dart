@@ -273,21 +273,28 @@ class _HomeState extends State<Home> {
   }
 }
 
-class ProductItem extends StatelessWidget {
+class ProductItem extends StatefulWidget {
   final bool isHotSales;
   final ProductModel products;
-  const ProductItem({
+  ProductItem({
     required this.isHotSales,
     required this.products,
     Key? key,
   }) : super(key: key);
 
   @override
+  State<ProductItem> createState() => _ProductItemState();
+}
+
+class _ProductItemState extends State<ProductItem> {
+  var currentUser = FirebaseAuth.instance.currentUser;
+
+  @override
   Widget build(BuildContext context) {
     return GestureDetector(
         onTap: () {
           if (kDebugMode) {
-            print(products.id);
+            print(widget.products.id);
           }
         },
         child: Container(
@@ -313,14 +320,14 @@ class ProductItem extends StatelessWidget {
                         height: 170,
                         width: 170,
                         child: CachedNetworkImage(
-                          imageUrl: products.images[0],
+                          imageUrl: widget.products.images[0],
                           fit: BoxFit.cover,
                         ),
                       ),
                     ).ripple(() {
                       NavigationService().navigateToScreen(ProductDetails(
-                        productId: products.id,
-                        userId: products.userId,
+                        productId: widget.products.id,
+                        userId: widget.products.userId,
                       ));
                     }),
                     Positioned(
@@ -337,11 +344,17 @@ class ProductItem extends StatelessWidget {
                           color: Colors.white,
                         ),
                         child: Center(
-                          child: SvgPicture.asset(ImagesAsset.bookmark),
+                          child: !widget.products.bookmarked
+                                  .contains(currentUser!.uid)
+                              ? SvgPicture.asset(ImagesAsset.bookmark)
+                              : SvgPicture.asset(
+                                  ImagesAsset.bookmarkActive,
+                                  color: OlxColor.olxPrimary,
+                                ),
                         ),
                       ),
                     ),
-                    isHotSales
+                    widget.isHotSales
                         ? Positioned(
                             bottom: 10,
                             left: 15,
@@ -377,7 +390,7 @@ class ProductItem extends StatelessWidget {
                         child: SizedBox(
                           width: 80,
                           child: Text(
-                            products.productName,
+                            widget.products.productName,
                             maxLines: 1,
                             overflow: TextOverflow.ellipsis,
                             style: Config.b1(context).copyWith(
@@ -389,7 +402,7 @@ class ProductItem extends StatelessWidget {
                       Text(
                         NumberFormat.simpleCurrency(
                                 name: '₦ ', decimalDigits: 0)
-                            .format(products.price),
+                            .format(widget.products.price),
                         style: Config.b1(context).copyWith(
                           fontSize: 10,
                         ),
@@ -401,7 +414,7 @@ class ProductItem extends StatelessWidget {
                     children: [
                       Flexible(
                         child: Text(
-                          products.description,
+                          widget.products.description,
                           overflow: TextOverflow.ellipsis,
                           maxLines: 2,
                           style: Config.b3(context).copyWith(
@@ -416,6 +429,22 @@ class ProductItem extends StatelessWidget {
             ],
           ),
         ));
+  }
+
+  void isLikedUnlike(
+    isLiked,
+  ) async {
+    var liked = isLiked;
+
+    setState(() {
+      isLiked = !isLiked;
+
+      try {
+        if (isLiked) {
+          
+        } else {}
+      } catch (e) {}
+    });
   }
 }
 
