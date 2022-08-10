@@ -14,6 +14,10 @@ abstract class ProductService {
   Future addProduct(ProductModel productModel);
 
   Future<UserParams> fetchSingleUser(String userId);
+
+  searchForProducts(String item);
+
+  Future<List<ProductModel>>? fetchProductbyCategory(String category);
 }
 
 class ProductServiceImpl implements ProductService {
@@ -41,6 +45,18 @@ class ProductServiceImpl implements ProductService {
   }
 
   @override
+  Future<List<ProductModel>>? fetchProductbyCategory(String category) async {
+    QuerySnapshot<Map<String, dynamic>> snapshot = await _db
+        .collection("product")
+        .where("category", isEqualTo: category)
+        .get();
+    print(snapshot.docs);
+    return snapshot.docs
+        .map((docSnapshot) => ProductModel.fromMap(docSnapshot))
+        .toList();
+  }
+
+  @override
   Future updateProduct(ProductModel productModel) async {
     await _db
         .collection("product")
@@ -58,5 +74,14 @@ class ProductServiceImpl implements ProductService {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("user").doc(userId).get();
     return UserParams.fromMap(snapshot);
+  }
+
+  @override
+  searchForProducts(String item) async {
+    var snapshot = await _db
+        .collection('items')
+        .where("searchKeywords", arrayContains: item)
+        .snapshots();
+    return snapshot.toList();
   }
 }

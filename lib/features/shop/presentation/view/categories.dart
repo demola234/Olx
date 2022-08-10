@@ -2,10 +2,12 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:ecommerce/core/utils/config.dart';
 import 'package:flutter/material.dart';
 import '../../../../core/constants/colors.dart';
+import '../../../../core/utils/navigator.dart';
 import '../../../../data/remote/products/categories_services.dart';
 import '../../../../di/di.dart';
 import '../../../authentication/presentation/view/setprofile/set_location.dart';
 import '../../data/categories_model.dart';
+import 'category_page.dart';
 
 class Categories extends StatefulWidget {
   const Categories({Key? key}) : super(key: key);
@@ -32,7 +34,6 @@ class _CategoriesState extends State<Categories> {
 
   @override
   Widget build(BuildContext context) {
-
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(70.0),
@@ -51,12 +52,9 @@ class _CategoriesState extends State<Categories> {
                   builder: (BuildContext context,
                       AsyncSnapshot<List<CategoryModel>> snapshot) {
                     if (snapshot.hasData && snapshot.data!.isNotEmpty) {
-                    
                       return ListView.builder(
                         itemCount: retrievedCategoriesList!.length,
                         itemBuilder: (context, index) {
-                        
-
                           return CategoryListItem(
                               categoryModel: snapshot.data![index]);
                         },
@@ -95,7 +93,11 @@ class CategoryListItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return InkWell(
-      onTap: () {},
+      onTap: () {
+        NavigationService().navigateToScreen(CategoryPage(
+          name: categoryModel.category,
+        ));
+      },
       child: Padding(
         padding: const EdgeInsets.symmetric(horizontal: 30.0, vertical: 10),
         child: Row(

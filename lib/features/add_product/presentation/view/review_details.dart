@@ -100,7 +100,8 @@ class _ReviewDetailsState extends State<ReviewDetails> {
             color: OlxColor.olxPrimary,
             onTap: () => acceptedInputs(),
             text: state.productState != ProductState.loading
-                ? "Review Details" : "Loading...",
+                ? "Review Details"
+                : "Loading...",
           )),
     );
   }

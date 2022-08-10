@@ -167,21 +167,33 @@ class _AddProductState extends State<AddProduct> {
                           })),
                 ],
               ),
-              const YMargin(90),
+              const YMargin(20),
+              productNameController.text.trim().isNotEmpty &&
+                      categoryController.text.trim().isNotEmpty &&
+                      shippingTypeController.text.trim().isNotEmpty &&
+                      images.isNotEmpty
+                  ? OlxButton(
+                      color: OlxColor.olxPrimary,
+                      onTap: () => acceptedInputs(),
+                      text: state.productState != ProductState.loading
+                          ? "Continue"
+                          : "Loading...",
+                    )
+                  : Container()
             ],
           ),
         ),
       ),
-      bottomNavigationBar: Container(
-          color: Colors.white,
-          padding: const EdgeInsets.only(bottom: 20),
-          child: OlxButton(
-            color: OlxColor.olxPrimary,
-            onTap: () => acceptedInputs(),
-            text: state.productState != ProductState.loading
-                ? "Continue"
-                : "Loading...",
-          )),
+      // bottomNavigationBar: Container(
+      //     color: Colors.white,
+      //     padding: const EdgeInsets.only(bottom: 20),
+      //     child: OlxButton(
+      //       color: OlxColor.olxPrimary,
+      //       onTap: () => acceptedInputs(),
+      //       text: state.productState != ProductState.loading
+      //           ? "Continue"
+      //           : "Loading...",
+      //     )),
     );
   }
 

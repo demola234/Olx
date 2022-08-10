@@ -85,6 +85,7 @@ class _MessageScreenState extends State<MessageScreen> {
                         Container(
                           height: 45,
                           width: 45,
+                          
                           decoration: BoxDecoration(
                             border: Border.all(color: Color(0xFF9AACC1)),
                             borderRadius: BorderRadius.circular(10.0),

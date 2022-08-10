@@ -6,7 +6,6 @@ import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:timeago/timeago.dart' as timeago;
-import '../../../../core/constants/image_assets.dart';
 import '../../../../core/utils/config.dart';
 import '../../../../data/remote/chat/chat_service.dart';
 import '../../../../di/di.dart';
@@ -25,11 +24,6 @@ class _MessageState extends State<Message> {
   Future<List<ChatModel>>? chatList;
   List<ChatModel>? retrievedChatsList;
   var currentUser = FirebaseAuth.instance.currentUser;
-
-  // Future<void> _initProductsRetrieval() async {
-  //   chatList = chatServices.getAllessage();
-  //   retrievedChatsList = await chatServices.getAllessage();
-  // }
 
   @override
   Widget build(BuildContext context) {
@@ -77,7 +71,7 @@ class _MessageState extends State<Message> {
                                           borderRadius:
                                               BorderRadius.circular(10.0),
                                           border: Border.all(
-                                              color: const Color(0xFF9BA7B5)),
+                                              color: const Color(0xFFF4F4F4)),
                                         ),
                                         child: Row(
                                           children: [
@@ -89,8 +83,8 @@ class _MessageState extends State<Message> {
                                                     BorderRadius.circular(10.0),
                                                 border: Border.all(
                                                     color: const Color(
-                                                        0xFF9BA7B5)),
-                                                color: const Color(0xFFE4F2FB),
+                                                        0xFFF4F4F4)),
+                                                color: const Color(0xFFF4F4F4),
                                               ),
                                               child: ClipRRect(
                                                 borderRadius:

@@ -36,6 +36,7 @@ dependencies:
   overlay_support: ^2.0.1
   photo_view: ^0.14.0
   pinput: ^2.2.11
+  search_page: ^2.0.0+1
   provider: ^6.0.1
   intl:
   shimmer: ^2.0.0

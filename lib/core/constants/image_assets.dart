@@ -27,12 +27,12 @@ class ImagesAsset {
   static String chat = '$_iconDir/Chat.svg';
   static String chevron = '$_iconDir/chevron.svg';
   static String logo = '$_iconDir/logo.svg';
-
   static String home = '$_iconDir/home.svg';
   static String add = '$_iconDir/add.svg';
-  // static String chat = '$_iconDir/Chat.svg';
+  static String locationIcon = '$_iconDir/location.svg';
   static String bookmark = '$_iconDir/Bookmark.svg';
   static String profile = '$_iconDir/Profile.svg';
+  static String search = '$_iconDir/Search.svg';
 
   //Jsons
   static String olxShop = '$_jsonDir/shop-delivery.json';

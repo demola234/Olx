@@ -7,6 +7,7 @@ import 'package:ecommerce/core/utils/navigator.dart';
 import 'package:ecommerce/features/authentication/data/user_model.dart';
 import 'package:ecommerce/features/chat/presentation/view/message_screen.dart';
 import 'package:ecommerce/features/shop/data/product_model.dart';
+import 'package:ecommerce/features/shop/presentation/view/search_product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -42,6 +43,7 @@ class _ProductDetailsState extends State<ProductDetails> {
   Future<UserParams>? userDetails;
   ChatModel? chatModel;
   ProductDetailsModel? productDetailsModel;
+
   int _index = 0;
   @override
   void initState() {

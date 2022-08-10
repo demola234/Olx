@@ -1,12 +1,17 @@
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:ecommerce/core/constants/image_assets.dart';
 import 'package:ecommerce/core/utils/config.dart';
 import 'package:ecommerce/core/utils/navigator.dart';
+import 'package:ecommerce/core/utils/ripple.dart';
 import 'package:ecommerce/features/shop/data/product_model.dart';
 import 'package:ecommerce/features/shop/presentation/view/product_details.dart';
+import 'package:ecommerce/features/shop/presentation/view/search_product.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
 import '../../../../core/constants/colors.dart';
 import '../../../../core/utils/custom_textfield.dart';
@@ -14,7 +19,9 @@ import '../../../../data/remote/products/categories_services.dart';
 import '../../../../data/remote/products/products.dart';
 import '../../../../di/di.dart';
 import '../../data/categories_model.dart';
+import '../widget/search_widget.dart';
 import 'categories.dart';
+import 'category_page.dart';
 
 class Home extends StatefulWidget {
   const Home({Key? key}) : super(key: key);
@@ -48,9 +55,18 @@ class _HomeState extends State<Home> {
     retrievedProductList = await productService.fetchAllProducts();
   }
 
+  Search search = Search();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      appBar: PreferredSize(
+          child: AppBar(
+            backgroundColor: Colors.transparent,
+            elevation: 0,
+            systemOverlayStyle: SystemUiOverlayStyle.dark,
+          ),
+          preferredSize: const Size(0, 0)),
       backgroundColor: Colors.white,
       body: SafeArea(
         child: Padding(
@@ -62,58 +78,58 @@ class _HomeState extends State<Home> {
                 Row(
                   children: [
                     Container(
-                        height: 27,
+                        padding: EdgeInsets.all(5),
+                        // height: 20,
                         // width: 98,
                         decoration: BoxDecoration(
-                            color: const Color(0xFFFAFAFA),
                             borderRadius: const BorderRadius.all(
                               Radius.circular(8.0),
                             ),
                             border: Border.all(color: const Color(0xFFF2F2F2))),
-                        child:
-                            StreamBuilder<QuerySnapshot<Map<String, dynamic>>>(
-                                stream: FirebaseFirestore.instance
-                                    .collection("user")
-                                    .where("uid",
-                                        isEqualTo: FirebaseAuth
-                                            .instance.currentUser!.uid)
-                                    .snapshots(),
-                                builder: (context, snapshot) {
-                                  if (snapshot.hasData &&
-                                      snapshot.data!.docs.isNotEmpty) {
-                                    print(snapshot.data!.docs[0]["address"]);
-                                    return Row(
-                                      children: [
-                                        Icon(Icons.location_on_outlined),
-                                        Text(snapshot.data!.docs[0]["address"])
-                                      ],
-                                    );
-                                  } else if (snapshot.connectionState ==
-                                          ConnectionState.done &&
-                                      retrievedCategoriesList!.isEmpty) {
-                                    return Center(
-                                      child: ListView(
-                                        children: const <Widget>[
-                                          Align(
-                                              alignment:
-                                                  AlignmentDirectional.center,
-                                              child:
-                                                  Text('Location not found')),
-                                        ],
-                                      ),
-                                    );
-                                  } else {
-                                    return const Center(
-                                        child: Text("Loading Location"));
-                                  }
-                                })),
+                        child: StreamBuilder<
+                                QuerySnapshot<Map<String, dynamic>>>(
+                            stream: FirebaseFirestore.instance
+                                .collection("user")
+                                .where("uid",
+                                    isEqualTo:
+                                        FirebaseAuth.instance.currentUser!.uid)
+                                .snapshots(),
+                            builder: (context, snapshot) {
+                              if (snapshot.hasData &&
+                                  snapshot.data!.docs.isNotEmpty) {
+                                print(snapshot.data!.docs[0]["address"]);
+                                return Row(
+                                  children: [
+                                    SvgPicture.asset(ImagesAsset.locationIcon),
+                                    XMargin(5),
+                                    Text(
+                                      snapshot.data!.docs[0]["address"],
+                                      style: Config.b2(context),
+                                    )
+                                  ],
+                                );
+                              } else if (snapshot.connectionState ==
+                                      ConnectionState.done &&
+                                  retrievedCategoriesList!.isEmpty) {
+                                return Center(
+                                  child: ListView(
+                                    children: const <Widget>[
+                                      Align(
+                                          alignment:
+                                              AlignmentDirectional.center,
+                                          child: Text('Location not found')),
+                                    ],
+                                  ),
+                                );
+                              } else {
+                                return const Center(
+                                    child: Text("Loading Location"));
+                              }
+                            })),
                   ],
                 ),
                 const YMargin(20),
-                const OlxTextFormField(
-                  hintText: "Search for products",
-                  prefixIcon: Icon(Icons.search),
-                ),
+                SearchWidget(),
                 const YMargin(20),
                 ReuseableTitle(
                   name: "Categories",
@@ -269,113 +285,133 @@ class ProductItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return GestureDetector(
-      onTap: () {
-        if (kDebugMode) {
-          print(products.id);
-        }
-        NavigationService().navigateToScreen(ProductDetails(
-          productId: products.id,
-          userId: products.userId,
-        ));
-      },
-      child: Container(
-        padding: const EdgeInsets.only(left: 15.0),
-        height: 250,
-        width: 170,
-        child: Column(
-          children: [
-            Container(
-              height: 170,
-              width: 170,
-              decoration: BoxDecoration(
-                  color: const Color(0xFFFADEE3),
-                  borderRadius: BorderRadius.circular(10.5)),
-              child: Column(
-                children: [
-                  const YMargin(15.0),
-                  SizedBox(
-                    width: 127,
-                    height: 116,
-                    child: CachedNetworkImage(imageUrl: products.images[0]),
-                  ),
-                  isHotSales
-                      ? Row(
-                          children: [
-                            Padding(
-                              padding: const EdgeInsets.only(left: 8.0),
-                              child: Container(
-                                height: 20,
-                                width: 80,
-                                decoration: BoxDecoration(
-                                    color: const Color(0xFFD8ECEA),
-                                    borderRadius: BorderRadius.circular(3.5)),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Text(
-                                    "Free shipping",
-                                    style: Config.b2(context).copyWith(
-                                      fontSize: 8,
-                                      fontWeight: FontWeight.normal,
-                                    ),
+        onTap: () {
+          if (kDebugMode) {
+            print(products.id);
+          }
+        },
+        child: Container(
+          padding: const EdgeInsets.only(left: 15.0),
+          height: 200,
+          width: 170,
+          child: Column(
+            children: [
+              Container(
+                // height: 170,
+                // width: 170,
+                decoration: BoxDecoration(
+                    color: const Color(0xFFFADEE3),
+                    borderRadius: BorderRadius.circular(10.5),
+                    border: Border.all(
+                      color: const Color(0xFFF4F4F4),
+                    )),
+                child: Stack(
+                  children: [
+                    ClipRRect(
+                      borderRadius: BorderRadius.circular(10.5),
+                      child: CachedNetworkImage(
+                        imageUrl: products.images[0],
+                        fit: BoxFit.contain,
+                      ),
+                    ).ripple(() {
+                      NavigationService().navigateToScreen(ProductDetails(
+                        productId: products.id,
+                        userId: products.userId,
+                      ));
+                    }),
+                    Positioned(
+                      top: 10,
+                      right: 15,
+                      child: Container(
+                        height: 50,
+                        width: 50,
+                        decoration: BoxDecoration(
+                          border: Border.all(color: const Color(0xFFF4F4F4)),
+                          borderRadius: const BorderRadius.all(
+                            Radius.circular(4.0),
+                          ),
+                          color: Colors.white,
+                        ),
+                        child: Center(
+                          child: SvgPicture.asset(ImagesAsset.bookmark),
+                        ),
+                      ),
+                    ),
+                    isHotSales
+                        ? Positioned(
+                            bottom: 10,
+                            left: 15,
+                            child: Container(
+                              height: 20,
+                              width: 80,
+                              decoration: const BoxDecoration(
+                                  borderRadius: BorderRadius.all(
+                                    Radius.circular(4.0),
+                                  ),
+                                  color: Color(0xFFD8ECEA)),
+                              child: Center(
+                                child: Text(
+                                  "Free Shipping",
+                                  style: Config.b3(context).copyWith(
+                                    fontSize: 8,
                                   ),
                                 ),
                               ),
                             ),
-                          ],
-                        )
-                      : SizedBox.shrink()
-                ],
+                          )
+                        : Container(),
+                  ],
+                ),
               ),
-            ),
-            const YMargin(5.0),
-            Column(
-              children: [
-                Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Flexible(
-                      child: SizedBox(
-                        width: 80,
-                        child: Text(
-                          products.productName,
-                          maxLines: 1,
-                          overflow: TextOverflow.ellipsis,
-                          style: Config.b1(context).copyWith(
-                            fontSize: 12,
+              const YMargin(5.0),
+              Column(
+                children: [
+                  Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                    children: [
+                      Flexible(
+                        child: SizedBox(
+                          width: 80,
+                          child: Text(
+                            products.productName,
+                            maxLines: 1,
+                            overflow: TextOverflow.ellipsis,
+                            style: Config.b1(context).copyWith(
+                              fontSize: 12,
+                            ),
                           ),
                         ),
                       ),
-                    ),
-                    Text(
-                      NumberFormat.simpleCurrency(name: '₦ ', decimalDigits: 0)
-                          .format(products.price),
-                      style: Config.b1(context).copyWith(
-                        fontSize: 10,
-                      ),
-                    ),
-                  ],
-                ),
-                const YMargin(5.0),
-                Row(
-                  children: [
-                    Flexible(
-                      child: Text(
-                        products.description,
-                        overflow: TextOverflow.ellipsis,
-                        maxLines: 2,
-                        style: Config.b3(context).copyWith(
+                      Text(
+                        NumberFormat.simpleCurrency(
+                                name: '₦ ', decimalDigits: 0)
+                            .format(products.price),
+                        style: Config.b1(context).copyWith(
                           fontSize: 10,
                         ),
                       ),
-                    ),
-                  ],
-                )
-              ],
-            )
-          ],
-        ),
-      ),
-    );
+                    ],
+                  ),
+                  const YMargin(5.0),
+                  Row(
+                    children: [
+                      Flexible(
+                        child: Text(
+                          products.description,
+                          overflow: TextOverflow.ellipsis,
+                          maxLines: 2,
+                          style: Config.b3(context).copyWith(
+                            fontSize: 10,
+                          ),
+                        ),
+                      ),
+                    ],
+                  )
+                ],
+              )
+            ],
+          ),
+        ));
   }
 }
 
@@ -424,7 +460,11 @@ class CategoriesTab extends StatelessWidget {
           ],
         ),
       ),
-    );
+    ).ripple(() {
+      NavigationService().navigateToScreen(CategoryPage(
+        name: categoryModel.category,
+      ));
+    });
   }
 }
 
