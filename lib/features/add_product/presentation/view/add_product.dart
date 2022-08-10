@@ -112,7 +112,7 @@ class _AddProductState extends State<AddProduct> {
               Row(
                 children: [
                   Text(
-                    "Upload",
+                    "Upload Images",
                     style: Config.b1(context).copyWith(fontSize: 13),
                   ),
                 ],

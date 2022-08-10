@@ -297,8 +297,8 @@ class ProductItem extends StatelessWidget {
           child: Column(
             children: [
               Container(
-                // height: 170,
-                // width: 170,
+                height: 170,
+                width: 170,
                 decoration: BoxDecoration(
                     color: const Color(0xFFFADEE3),
                     borderRadius: BorderRadius.circular(10.5),
@@ -309,9 +309,13 @@ class ProductItem extends StatelessWidget {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.5),
-                      child: CachedNetworkImage(
-                        imageUrl: products.images[0],
-                        fit: BoxFit.contain,
+                      child: Container(
+                        height: 170,
+                        width: 170,
+                        child: CachedNetworkImage(
+                          imageUrl: products.images[0],
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ).ripple(() {
                       NavigationService().navigateToScreen(ProductDetails(

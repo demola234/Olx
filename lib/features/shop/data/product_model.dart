@@ -1,3 +1,4 @@
+// ignore_for_file: public_member_api_docs, sort_constructors_first
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class ProductModel {
@@ -10,6 +11,7 @@ class ProductModel {
   int price;
   String description;
   String category;
+  List<String> bookmarked;
   ProductModel({
     required this.id,
     required this.productName,
@@ -20,6 +22,7 @@ class ProductModel {
     required this.price,
     required this.description,
     required this.category,
+    required this.bookmarked,
   });
 
   Map<String, dynamic> toMap() {
@@ -33,6 +36,7 @@ class ProductModel {
       'price': price,
       'description': description,
       'category': category,
+      'bookmarked': bookmarked,
     };
   }
 
@@ -45,5 +49,6 @@ class ProductModel {
         userId = map['user_id'] as String,
         price = map['price'] as int,
         description = map['description'] as String,
+        bookmarked = List<String>.from((map['bookmarked'])),
         category = map['category'] as String;
 }

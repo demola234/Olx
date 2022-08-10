@@ -5,7 +5,6 @@ import 'package:flutter/material.dart';
 
 import '../../../../data/remote/products/products.dart';
 import '../../../../di/di.dart';
-// import '../../../add_product/data/product_model.dart';
 import '../../../authentication/presentation/view/setprofile/set_location.dart';
 
 class CategoryPage extends StatefulWidget {

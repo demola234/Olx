@@ -125,7 +125,7 @@ class _ReviewDetailsState extends State<ReviewDetails> {
         Toasts.showErrorToast("Please Type in Full Name");
         return;
       } else if (phone.trim().isEmpty) {
-        Toasts.showErrorToast("Please Type in Mobile");
+        Toasts.showErrorToast("Please Type in Mobile Number");
         return;
       } else if (email.trim().isEmpty) {
         Toasts.showErrorToast("Please Type in your Email");

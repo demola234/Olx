@@ -1,6 +1,9 @@
 import 'package:ecommerce/core/constants/colors.dart';
+
 import 'package:flutter/material.dart';
-import '../../../authentication/presentation/view/setprofile/set_location.dart';
+
+import '../widget/bookmarked.dart';
+import '../widget/my_products.dart';
 
 class SaveProduct extends StatefulWidget {
   const SaveProduct({Key? key}) : super(key: key);
@@ -16,6 +19,7 @@ class _SaveProductState extends State<SaveProduct> {
     return DefaultTabController(
       length: 2,
       child: Scaffold(
+        backgroundColor: Colors.white,
         body: SafeArea(
           child: Column(
             children: [
@@ -47,12 +51,8 @@ class _SaveProductState extends State<SaveProduct> {
               const Expanded(
                   child: TabBarView(
                 children: [
-                  Center(
-                    child: Text("Bookmarked"),
-                  ),
-                  Center(
-                    child: Text("My Products"),
-                  ),
+                  Bookmarked(),
+                  MyProducts(),
                 ],
               ))
             ],
