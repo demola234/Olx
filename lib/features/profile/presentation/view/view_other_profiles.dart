@@ -4,13 +4,11 @@ import 'package:flutter/material.dart';
 
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/utils/config.dart';
-import 'package:ecommerce/core/utils/custom_buttons.dart';
 import 'package:ecommerce/features/authentication/data/user_model.dart';
 
 import '../../../../data/remote/products/products.dart';
 import '../../../../di/di.dart';
 import '../../../authentication/presentation/view/setprofile/set_location.dart';
-import '../../../chat/data/message_model.dart';
 import '../../../shop/presentation/view/product_details.dart';
 
 class ViewProfile extends StatefulWidget {
@@ -55,7 +53,7 @@ class _ViewProfileState extends State<ViewProfile> {
             if (snapshot.hasData) {
               return Column(
                 children: [
-                  YMargin(40),
+                  const YMargin(40),
                   Align(
                     alignment: Alignment.center,
                     child: ClipRRect(
@@ -71,12 +69,12 @@ class _ViewProfileState extends State<ViewProfile> {
                               imageUrl: snapshot.data!.profileImage!)),
                     ),
                   ),
-                  YMargin(20),
+                  const YMargin(20),
                   Flexible(
                     child: FloatingOlxButtons(
                         color: OlxColor.olxPrimary, name: "Call", onTap: () {}),
                   ),
-                  YMargin(20),
+                  const YMargin(20),
                   Padding(
                     padding: const EdgeInsets.symmetric(horizontal: 30.0),
                     child: Column(
@@ -93,7 +91,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(20),
+                        const YMargin(20),
                         Row(
                           children: [
                             Text(
@@ -106,7 +104,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(5),
+                        const YMargin(5),
                         Row(
                           children: [
                             Text(
@@ -119,7 +117,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(20),
+                        const YMargin(20),
                         Row(
                           children: [
                             Text(
@@ -132,7 +130,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(5),
+                        const YMargin(5),
                         Row(
                           children: [
                             Text(
@@ -145,7 +143,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(20),
+                        const YMargin(20),
                         Row(
                           children: [
                             Text(
@@ -158,7 +156,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(5),
+                        const YMargin(5),
                         Row(
                           children: [
                             Text(
@@ -171,7 +169,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(20),
+                        const YMargin(20),
                         Row(
                           children: [
                             Text(
@@ -184,7 +182,7 @@ class _ViewProfileState extends State<ViewProfile> {
                             ),
                           ],
                         ),
-                        YMargin(5),
+                        const YMargin(5),
                         Row(
                           children: [
                             Text(

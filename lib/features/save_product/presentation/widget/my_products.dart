@@ -1,19 +1,16 @@
-import 'package:ecommerce/core/constants/colors.dart';
-import 'package:ecommerce/core/utils/navigator.dart';
-import 'package:ecommerce/core/utils/ripple.dart';
-import 'package:ecommerce/features/save_product/presentation/provider/save_product_provider.dart';
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/material.dart';
-
-import 'package:ecommerce/core/utils/config.dart';
-import 'package:ecommerce/features/shop/data/product_model.dart';
-import 'package:ecommerce/features/shop/presentation/view/home.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
+import 'package:ecommerce/core/constants/colors.dart';
+import 'package:ecommerce/core/utils/config.dart';
+import 'package:ecommerce/core/utils/navigator.dart';
+import 'package:ecommerce/features/save_product/presentation/provider/save_product_provider.dart';
+import 'package:ecommerce/features/shop/data/product_model.dart';
+import 'package:ecommerce/features/shop/presentation/view/home.dart';
+
 import '../../../../data/remote/products/products.dart';
 import '../../../../di/di.dart';
-import '../../../authentication/presentation/view/setprofile/set_location.dart';
 
 class MyProducts extends StatefulWidget {
   const MyProducts({Key? key}) : super(key: key);

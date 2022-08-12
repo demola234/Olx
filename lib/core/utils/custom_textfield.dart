@@ -77,7 +77,7 @@ class OlxTextFormField extends StatelessWidget {
         hintText: hintText,
         hintStyle: Config.b2(context).copyWith(
           fontWeight: FontWeight.w100,
-          color: Color(0xFF77869E),
+          color: const Color(0xFF77869E),
         ),
       ),
       onChanged: onChanged,

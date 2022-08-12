@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:io';
-import 'dart:typed_data';
 
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/data/remote/storage_method/storage_methods.dart';
@@ -43,7 +42,7 @@ class GoogleAuthServiceImpl implements GoogleAuthServices {
 
         if (document.isEmpty) {
           Toasts.showSuccessToast("Provide Details");
-          NavigationService().replaceScreen(SetProfile(
+          NavigationService().replaceScreen(const SetProfile(
             isPhone: false,
           ));
         }

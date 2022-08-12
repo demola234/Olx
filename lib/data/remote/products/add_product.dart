@@ -1,3 +1,5 @@
+// ignore_for_file: unnecessary_null_comparison
+
 import 'dart:io';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/features/authentication/data/user_model.dart';
@@ -84,7 +86,7 @@ class AddProductServiceImpl extends AddProductService {
           "address": address,
         }
       });
-      NavigationService().replaceScreen(NavBar());
+      NavigationService().replaceScreen(const NavBar());
     } catch (e) {
       Toasts.showErrorToast("Details Unable to be Updated");
       if (kDebugMode) {

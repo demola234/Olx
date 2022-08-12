@@ -37,14 +37,14 @@ class _CategoryPageState extends State<CategoryPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: PreferredSize(
-        preferredSize: Size.fromHeight(70.0),
+        preferredSize: const Size.fromHeight(70.0),
         child: CustomAppBar(
           title: widget.name,
         ),
       ),
       body: Column(
         children: [
-          YMargin(20),
+          const YMargin(20),
           Expanded(
             child: Padding(
               padding: const EdgeInsets.symmetric(horizontal: 20.0),

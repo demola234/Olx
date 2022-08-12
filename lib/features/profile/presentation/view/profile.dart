@@ -53,7 +53,7 @@ class _ProfileState extends State<Profile> {
                   return Expanded(
                     child: Column(
                       children: [
-                        YMargin(20),
+                        const YMargin(20),
                         Align(
                           alignment: Alignment.center,
                           child: ClipRRect(
@@ -69,17 +69,17 @@ class _ProfileState extends State<Profile> {
                                     imageUrl: snapshot.data!.profileImage!)),
                           ),
                         ),
-                        YMargin(20),
+                        const YMargin(20),
                         Flexible(
                           child: FloatingOlxButtons(
-                              color: Color(0xFF82A3A1),
+                              color: const Color(0xFF82A3A1),
                               name: "Edit Profile",
                               onTap: () {
                                 NavigationService()
-                                    .navigateToScreen(EditProfile());
+                                    .navigateToScreen(const EditProfile());
                               }),
                         ),
-                        YMargin(20),
+                        const YMargin(20),
                         Padding(
                           padding: const EdgeInsets.symmetric(horizontal: 30.0),
                           child: Column(
@@ -96,7 +96,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(20),
+                              const YMargin(20),
                               Row(
                                 children: [
                                   Text(
@@ -109,7 +109,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(5),
+                              const YMargin(5),
                               Row(
                                 children: [
                                   Text(
@@ -122,7 +122,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(20),
+                              const YMargin(20),
                               Row(
                                 children: [
                                   Text(
@@ -135,7 +135,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(5),
+                              const YMargin(5),
                               Row(
                                 children: [
                                   Text(
@@ -148,7 +148,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(20),
+                              const YMargin(20),
                               Row(
                                 children: [
                                   Text(
@@ -161,7 +161,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(5),
+                              const YMargin(5),
                               Row(
                                 children: [
                                   Text(
@@ -174,7 +174,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(20),
+                              const YMargin(20),
                               Row(
                                 children: [
                                   Text(
@@ -187,7 +187,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                 ],
                               ),
-                              YMargin(5),
+                              const YMargin(5),
                               Row(
                                 children: [
                                   Text(

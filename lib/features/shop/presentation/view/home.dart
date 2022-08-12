@@ -78,7 +78,7 @@ class _HomeState extends State<Home> {
                 Row(
                   children: [
                     Container(
-                        padding: EdgeInsets.all(5),
+                        padding: const EdgeInsets.all(5),
                         // height: 20,
                         // width: 98,
                         decoration: BoxDecoration(
@@ -97,11 +97,13 @@ class _HomeState extends State<Home> {
                             builder: (context, snapshot) {
                               if (snapshot.hasData &&
                                   snapshot.data!.docs.isNotEmpty) {
-                                print(snapshot.data!.docs[0]["address"]);
+                                if (kDebugMode) {
+                                  print(snapshot.data!.docs[0]["address"]);
+                                }
                                 return Row(
                                   children: [
                                     SvgPicture.asset(ImagesAsset.locationIcon),
-                                    XMargin(5),
+                                    const XMargin(5),
                                     Text(
                                       snapshot.data!.docs[0]["address"],
                                       style: Config.b2(context),
@@ -129,7 +131,7 @@ class _HomeState extends State<Home> {
                   ],
                 ),
                 const YMargin(20),
-                SearchWidget(),
+                const SearchWidget(),
                 const YMargin(20),
                 ReuseableTitle(
                   name: "Categories",
@@ -197,7 +199,7 @@ class _HomeState extends State<Home> {
                                   ? ProductItem(
                                       isHotSales: true,
                                       products: snapshot.data![index])
-                                  : SizedBox.shrink();
+                                  : const SizedBox.shrink();
                             },
                           );
                         } else if (snapshot.connectionState ==
@@ -243,7 +245,7 @@ class _HomeState extends State<Home> {
                                   ? ProductItem(
                                       isHotSales: false,
                                       products: snapshot.data![index])
-                                  : SizedBox.shrink();
+                                  : const SizedBox.shrink();
                             },
                           );
                         } else if (snapshot.connectionState ==
@@ -316,7 +318,7 @@ class _ProductItemState extends State<ProductItem> {
                   children: [
                     ClipRRect(
                       borderRadius: BorderRadius.circular(10.5),
-                      child: Container(
+                      child: SizedBox(
                         height: 170,
                         width: 170,
                         child: CachedNetworkImage(

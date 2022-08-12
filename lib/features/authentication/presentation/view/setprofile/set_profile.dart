@@ -1,12 +1,10 @@
 import 'dart:io';
-import 'dart:typed_data';
 import 'package:ecommerce/core/constants/colors.dart';
 import 'package:ecommerce/core/utils/config.dart';
 import 'package:ecommerce/core/utils/custom_toasts.dart';
-import 'package:ecommerce/core/utils/pick_image.dart';
 import 'package:ecommerce/data/remote/storage_method/storage_methods.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
 import 'package:images_picker/images_picker.dart';
 import 'package:provider/provider.dart';
 import '../../../../../core/constants/image_assets.dart';
@@ -46,7 +44,9 @@ class _SetProfileState extends State<SetProfile> {
     if (res != null) {
       setState(() {
         image.addAll(res.map((e) => File(e.path)));
-        print(image.first.path);
+        if (kDebugMode) {
+          print(image.first.path);
+        }
       });
     } else if (res == null) {
       Toasts.showErrorToast("No Image Selected");
@@ -147,7 +147,7 @@ class _SetProfileState extends State<SetProfile> {
                   color: OlxColor.olxPrimary,
                   onTap: () {
                     if (!widget.isPhone) {
-                      if (image != null &&
+                      if (image.isEmpty &&
                           fullNameController.text.isNotEmpty &&
                           phoneController.text.isNotEmpty) {
                         saveDetailsfromGoogle(context);

@@ -3,11 +3,9 @@ import 'package:ecommerce/features/add_product/presentation/provider/product_sta
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 
-import '../../../../core/utils/navigator.dart';
 import '../../../../data/remote/products/add_product.dart';
 import '../../../../di/di.dart';
 import '../../../shop/data/categories_model.dart';
-import '../view/review_details.dart';
 
 class CategoriesProvider with ChangeNotifier {
   var productServices = getIt<AddProductService>();

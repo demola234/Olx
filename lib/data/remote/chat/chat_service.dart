@@ -2,17 +2,17 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:ecommerce/features/chat/data/chat_model.dart';
 import 'package:ecommerce/features/chat/data/message_model.dart';
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 
 abstract class ChatServices {
   Future createRoom(ChatModel chat);
   Future createChat(String chatId, MessageModel messageModel);
   getMessages(String chatId);
   Future<ChatModel> fetchChatProducts(String chatId);
-  Future<List<ChatModel>> getAllessage();
+  Future<List<ChatModel>> getAllMessage();
 }
 
 class ChatServicesImpl implements ChatServices {
-  final FirebaseAuth _auth = FirebaseAuth.instance;
   final FirebaseFirestore _db = FirebaseFirestore.instance;
 
   @override
@@ -48,15 +48,19 @@ class ChatServicesImpl implements ChatServices {
   Future<ChatModel> fetchChatProducts(String chatId) async {
     DocumentSnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("chat").doc(chatId).get();
-    print(snapshot.data());
+    if (kDebugMode) {
+      print(snapshot.data());
+    }
     return ChatModel.fromMap(snapshot);
   }
 
   @override
-  Future<List<ChatModel>> getAllessage() async {
+  Future<List<ChatModel>> getAllMessage() async {
     QuerySnapshot<Map<String, dynamic>> snapshot =
         await _db.collection("chat").get();
-    print(snapshot);
+    if (kDebugMode) {
+      print(snapshot);
+    }
     return snapshot.docs
         .map((docSnapshot) => ChatModel.fromMap(docSnapshot))
         .toList();

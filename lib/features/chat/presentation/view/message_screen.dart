@@ -73,7 +73,7 @@ class _MessageScreenState extends State<MessageScreen> {
               builder: (context, AsyncSnapshot<ChatModel> snapshot) {
                 if (snapshot.hasData) {
                   return Container(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
                     height: 60,
                     width: context.screenWidth(),
                     decoration: const BoxDecoration(
@@ -87,7 +87,7 @@ class _MessageScreenState extends State<MessageScreen> {
                           width: 45,
                           
                           decoration: BoxDecoration(
-                            border: Border.all(color: Color(0xFF9AACC1)),
+                            border: Border.all(color: const Color(0xFF9AACC1)),
                             borderRadius: BorderRadius.circular(10.0),
                             color: const Color(0xFFE4F2FB),
                           ),
@@ -99,7 +99,7 @@ class _MessageScreenState extends State<MessageScreen> {
                                     snapshot.data!.product[0].productImage),
                           ),
                         ),
-                        XMargin(10),
+                        const XMargin(10),
                         Column(
                           mainAxisAlignment: MainAxisAlignment.center,
                           crossAxisAlignment: CrossAxisAlignment.start,
@@ -146,7 +146,7 @@ class _MessageScreenState extends State<MessageScreen> {
                       return ListView.builder(
                           itemCount: snapshot.data!.docs.length,
                           reverse: true,
-                          physics: BouncingScrollPhysics(),
+                          physics: const BouncingScrollPhysics(),
                           itemBuilder: (context, index) {
                             return Padding(
                               padding:
